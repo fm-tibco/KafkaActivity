@@ -1,5 +1,5 @@
 {
-  "name": "nbcu-kafkaActivity",
+  "name": "tibco-kafkapub",
   "version": "0.0.1",
   "title": "NBCU Kafka Connector",
   "type": "flogo:activity",
