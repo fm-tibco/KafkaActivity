@@ -1,0 +1,20 @@
+{
+  "name": "tibco-kafka",
+  "version": "0.0.1",
+  "title": "NBCU Kafka Connector",
+  "type": "flogo:activity",
+  "ref": "github.com/rickdantz/KafkaMessage",
+  "description": "Simple Kafka Activity",
+  "author": "Derrick Dantzler",
+  "inputs":[
+    {
+      "name": "topic",
+      "type": "string"
+    },
+	    {
+      "name": "message",
+      "type": "string"
+    }
+  ],
+  "outputs": []
+}
