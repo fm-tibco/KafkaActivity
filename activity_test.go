@@ -1,4 +1,4 @@
-package kafkaActivity
+package KafkaActivity
 
 import (
 	"testing"
