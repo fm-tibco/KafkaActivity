@@ -1,4 +1,4 @@
-package kafkaActivity
+package KafkaActivity
 
 // Imports all of the flowGo binaries
 import (
