@@ -27,10 +27,20 @@ type KafkaActivity struct {
 }
 
 // init create & register activity
-func init() {
-	md := activity.NewMetadata(jsonMetadata)
-	activity.Register(&KafkaActivity{metadata: md})
+// func init() {
+// 	md := activity.NewMetadata(jsonMetadata)
+//	activity.Register(&KafkaActivity{metadata: md})
+// }
+
+// NewActivity creates a new activity
+func NewActivity(metadata *activity.Metadata) activity.Activity {
+	flogoLogger.Debugf("KafkaActivity NewActivity")
+	pKafkaActivity := &KafkaActivity{metadata: metadata}
+	producers := make(map[string]sarama.SyncProducer)
+	pKafkaActivity.syncProducerMap = &producers
+	return pKafkaActivityy
 }
+
 
 // Metadata implements activity.Activity.Metadata
 func (a *KafkaActivity) Metadata() *activity.Metadata {
