@@ -5,7 +5,24 @@ import (
 
 	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
+	"io/ioutil"
 )
+
+var activityMetadata *activity.Metadata
+
+func getActivityMetadata() *activity.Metadata {
+
+	if activityMetadata == nil {
+		jsonMetadataBytes, err := ioutil.ReadFile("activity.json")
+		if err != nil {
+			panic("No Json Metadata found for activity.json path")
+		}
+
+		activityMetadata = activity.NewMetadata(string(jsonMetadataBytes))
+	}
+
+	return activityMetadata
+}
 
 func TestRegistered(t *testing.T) {
 	act := activity.Get("tibco-kafka")
@@ -26,10 +43,11 @@ func TestEval(t *testing.T) {
 		}
 	}()
 
-	md := activity.NewMetadata(jsonMetadata)
-	act := &KafkaActivity{metadata: md}
+	//md := activity.NewMetadata(jsonMetadata)
+	//act := &KafkaActivity{metadata: md}
 
-	tc := test.NewTestActivityContext(md)
+	act := NewActivity(getActivityMetadata())
+	tc := test.NewTestActivityContext(getActivityMetadata())
 
 	//setup attrs
 	tc.SetInput(topic, "derrick-001")

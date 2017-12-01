@@ -6,12 +6,13 @@ import (
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/optiopay/kafka"
 	"github.com/optiopay/kafka/proto"
+	"github.com/Shopify/sarama"
 )
 
 // log is the default package logger
 var log = logger.GetLogger("activity-tibco-kafka")
 
-// Construct Input Parms
+// Construct Input Params
 const (
 	topic     = "topic"
 	message   = "message"
@@ -24,6 +25,7 @@ var kafkaAddrs = []string{"ushapld00119la:9092", "ushapld00119la:9092"}
 // KafkaActivity is a Kafka Activity implementation
 type KafkaActivity struct {
 	metadata *activity.Metadata
+	syncProducerMap *map[string]sarama.SyncProducer
 }
 
 // init create & register activity
@@ -34,11 +36,11 @@ type KafkaActivity struct {
 
 // NewActivity creates a new activity
 func NewActivity(metadata *activity.Metadata) activity.Activity {
-	flogoLogger.Debugf("KafkaActivity NewActivity")
+	log.Debug("KafkaActivity NewActivity")
 	pKafkaActivity := &KafkaActivity{metadata: metadata}
 	producers := make(map[string]sarama.SyncProducer)
 	pKafkaActivity.syncProducerMap = &producers
-	return pKafkaActivityy
+	return pKafkaActivity
 }
 
 
@@ -60,7 +62,7 @@ func (a *KafkaActivity) Eval(context activity.Context) (done bool, err error) {
 	// connect to kafka cluster
 	broker, err := kafka.Dial(kafkaAddrs, conf)
 	if err != nil {
-		//	flogoLogger.Errorf("cannot connect to kafka cluster: %s", err)
+		log.Error("cannot connect to kafka cluster:", err)
 	}
 	defer broker.Close()
 
